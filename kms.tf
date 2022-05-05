@@ -38,25 +38,10 @@ data "aws_iam_policy_document" "key_policy_document" {
     ]
   }
   statement {
-    sid = "Allowaccess for Key Administrators"
-    principals {
-      type        = "AWS"
-      identifiers = [local.normal_user]
-    }
-    resources = ["*"]
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey",
-      "kms:DescribeKey"
-    ]
-  }
-  statement {
     sid = "Allow use of the key"
     principals {
       type        = "AWS"
-      identifiers = [local.normal_user]
+      identifiers = [local.normal_user, aws_iam_role.kms_use.arn]
     }
     resources = ["*"]
     actions = [
