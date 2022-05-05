@@ -10,6 +10,17 @@ data "aws_iam_policy_document" "kms_use_assume_policy" {
       type        = "AWS"
       identifiers = [local.normal_user]
     }
-    // 後でOIDCの設定を追加
+  }
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.github_actions.arn]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = ["repo:hyt-sasaki/sops-test:*"]
+    }
   }
 }
