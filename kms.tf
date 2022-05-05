@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "key_policy_document" {
     sid = "Allow use of the key"
     principals {
       type        = "AWS"
-      identifiers = [local.normal_user, aws_iam_role.kms_use.arn]
+      identifiers = [aws_iam_role.kms_use.arn]
     }
     resources = ["*"]
     actions = [

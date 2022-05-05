@@ -16,7 +16,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::146161350821:role/kms_use_role
+          role-to-assume: arn:aws:iam::146161350821:role/gha_role
           aws-region: ap-northeast-1
       - name: Get caller identity
         run: |
