@@ -18,6 +18,13 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::146161350821:role/kms_use_role
           aws-region: ap-northeast-1
-      - name: get caller identity
+      - name: Get caller identity
         run: |
           aws sts get-caller-identity
+      - name: Install SOPS
+        run: |
+          sudo curl -L -o /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/v3.7.1/sops-v3.7.1.linux
+          sudo chmod +x /usr/local/bin/sops
+      - name: Decrypt sops file
+        run: |
+          sops -d demo_secret.yml
