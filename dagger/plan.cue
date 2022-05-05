@@ -10,7 +10,7 @@ dagger.#Plan & {
     client: {
         commands: sts: {
             name: "aws"
-            args: ["sts", "assume-role", "--role-arn", "arn:aws:iam::146161350821:role/gha_role", "--role-session-name", "AWSCLIsession"]
+            args: ["sts", "assume-role", "--role-arn", "arn:aws:iam::146161350821:role/kms_use_role", "--role-session-name", "AWSCLIsession"]
             stdout: dagger.#Secret
         }
     }
