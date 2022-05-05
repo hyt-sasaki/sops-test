@@ -28,8 +28,8 @@ dagger.#Plan & {
                 sessionToken: _credential.SessionToken.contents
             }
             command: {
-                name: "sh"
-                flags: "-c": "aws sts get-caller-identity"
+                name: "aws"
+                args: ["sts", "get-caller-identity", "--debug"]
             }
         }
     }
