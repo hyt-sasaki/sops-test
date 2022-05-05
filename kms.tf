@@ -1,22 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket = "hytssk-remote-tfstate"
-    region = "ap-northeast-1"
-    key    = "resources/kms/terraform.tfstate"
-  }
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 4.12.1"
-    }
-  }
-}
-
-provider "aws" {
-  region = "ap-northeast-1"
-}
-
 resource "aws_kms_key" "dagger" {
   description = "key for dagger CI/CD"
   policy      = data.aws_iam_policy_document.key_policy_document.json
@@ -27,7 +8,7 @@ data "aws_iam_policy_document" "key_policy_document" {
     sid = "Enable IAM User Permissions"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::146161350821:root"]
+      identifiers = [local.root_user]
     }
     actions   = ["kms:*"]
     resources = ["*"]
@@ -36,7 +17,7 @@ data "aws_iam_policy_document" "key_policy_document" {
     sid = "Allow access for Key Administrators"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::146161350821:user/daily_use"]
+      identifiers = [local.normal_user]
     }
     resources = ["*"]
     actions = [
@@ -60,7 +41,7 @@ data "aws_iam_policy_document" "key_policy_document" {
     sid = "Allowaccess for Key Administrators"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::146161350821:user/daily_use"]
+      identifiers = [local.normal_user]
     }
     resources = ["*"]
     actions = [
@@ -75,7 +56,7 @@ data "aws_iam_policy_document" "key_policy_document" {
     sid = "Allow use of the key"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::146161350821:user/daily_use"]
+      identifiers = [local.normal_user]
     }
     resources = ["*"]
     actions = [
@@ -90,7 +71,7 @@ data "aws_iam_policy_document" "key_policy_document" {
     sid = "Allow attachment of persistent resources"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::146161350821:user/daily_use"]
+      identifiers = [local.normal_user]
     }
     condition {
       test     = "Bool"
