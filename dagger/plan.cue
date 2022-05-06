@@ -27,6 +27,10 @@ dagger.#Plan & {
                 secretAccessKey: _credential.SecretAccessKey.contents
                 sessionToken: _credential.SessionToken.contents
             }
+            env: {
+                AWS_EC2_METADATA_DISABLED: "true"
+                // NO_PROXY: "localhost,127.0.0.1,169.254.169.254"
+            }
             command: {
                 name: "aws"
                 args: ["sts", "get-caller-identity", "--debug"]
