@@ -8,9 +8,17 @@ data "aws_iam_policy_document" "kms_use_assume_policy" {
     actions = ["sts:AssumeRole"]
     principals {
       type        = "AWS"
-      identifiers = [local.normal_user]
+      identifiers = [aws_iam_role.gha.arn, local.normal_user]
     }
   }
+}
+
+resource "aws_iam_role" "gha" {
+  name               = "gha_role"
+  assume_role_policy = data.aws_iam_policy_document.gha_assume_policy.json
+}
+
+data "aws_iam_policy_document" "gha_assume_policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {

@@ -1,0 +1,26 @@
+name: aws-dagger-test
+
+on:
+  pull_request:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::146161350821:role/gha_role
+          aws-region: ap-northeast-1
+      - uses: dagger/dagger-for-github@v2
+        with:
+          version: 0.2.8
+          workdir: ./dagger
+          cmds: |
+            do getCallerIdentity --log-format=plain

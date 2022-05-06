@@ -1,0 +1,30 @@
+name: aws-test
+
+on:
+  pull_request:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::146161350821:role/gha_role
+          aws-region: ap-northeast-1
+      - name: Get caller identity
+        run: |
+          aws sts get-caller-identity
+      - name: Install SOPS
+        run: |
+          sudo curl -L -o /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/v3.7.1/sops-v3.7.1.linux
+          sudo chmod +x /usr/local/bin/sops
+      - name: Decrypt sops file
+        run: |
+          sops -d demo_secret.yml
